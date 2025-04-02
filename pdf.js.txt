@@ -1,0 +1,15 @@
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Get the resume preview content
+        const resumeContent = document.getElementById('resumePreview').innerText;
+        
+        // Add text to PDF
+        doc.text(resumeContent, 10, 10);
+        
+        // Save the PDF
+        doc.save('resume.pdf');
+    });
+});

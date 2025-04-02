@@ -1,0 +1,66 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // CAPTCHA generation
+    function generateCaptcha() {
+        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let captcha = '';
+        for (let i = 0; i < 6; i++) {
+            captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return captcha;
+    }
+
+    let currentCaptcha = generateCaptcha();
+    document.getElementById('captchaText').textContent = currentCaptcha;
+
+    // Refresh CAPTCHA
+    document.getElementById('refreshCaptcha').addEventListener('click', function() {
+        currentCaptcha = generateCaptcha();
+        document.getElementById('captchaText').textContent = currentCaptcha;
+    });
+
+    // Switch between login and register forms
+    document.getElementById('switchToRegister').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('loginForm').parentElement.style.display = 'none';
+        document.getElementById('registerCard').style.display = 'block';
+    });
+
+    document.getElementById('switchToLogin').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('registerCard').style.display = 'none';
+        document.getElementById('loginForm').parentElement.style.display = 'block';
+    });
+
+    // Form validation
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const enteredCaptcha = document.getElementById('captcha').value;
+        
+        if (enteredCaptcha !== currentCaptcha) {
+            alert('CAPTCHA verification failed. Please try again.');
+            currentCaptcha = generateCaptcha();
+            document.getElementById('captchaText').textContent = currentCaptcha;
+            return;
+        }
+        
+        // In a real app, you would validate credentials with a server
+        alert('Login successful! Redirecting to resume builder...');
+        window.location.href = 'builder.html';
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = document.getElementById('regConfirmPassword').value;
+        
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+        
+        // In a real app, you would send registration data to a server
+        alert('Registration successful! Please login.');
+        document.getElementById('registerCard').style.display = 'none';
+        document.getElementById('loginForm').parentElement.style.display = 'block';
+    });
+});

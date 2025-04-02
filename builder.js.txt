@@ -1,0 +1,295 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme toggle
+    document.getElementById('themeToggle').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (document.body.classList.contains('indigo-theme')) {
+            document.body.classList.remove('indigo-theme');
+            document.body.classList.add('vibrant-theme');
+            this.textContent = 'Indigo Theme';
+        } else {
+            document.body.classList.remove('vibrant-theme');
+            document.body.classList.add('indigo-theme');
+            this.textContent = 'Vibrant Theme';
+        }
+    });
+
+    // Logout button
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = 'index.html';
+        }
+    });
+
+    // Form data storage
+    let resumeData = {
+        personalInfo: {},
+        education: [],
+        experience: [],
+        skills: []
+    };
+
+    // Load saved data from localStorage
+    if (localStorage.getItem('resumeData')) {
+        resumeData = JSON.parse(localStorage.getItem('resumeData'));
+        populateForms();
+    }
+
+    // Personal Info Form
+    document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        resumeData.personalInfo = {
+            fullName: document.getElementById('fullName').value,
+            profession: document.getElementById('profession').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value,
+            summary: document.getElementById('summary').value
+        };
+        updatePreview();
+        alert('Personal information saved!');
+    });
+
+    // Education Form
+    document.getElementById('addEducation').addEventListener('click', function() {
+        const educationEntry = document.querySelector('.education-entry').cloneNode(true);
+        educationEntry.querySelectorAll('input').forEach(input => input.value = '');
+        educationEntry.style.display = 'block';
+        educationEntry.querySelector('.remove-education').addEventListener('click', function() {
+            educationEntry.remove();
+        });
+        document.getElementById('educationForm').insertBefore(educationEntry, this);
+    });
+
+    document.getElementById('educationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        resumeData.education = [];
+        document.querySelectorAll('.education-entry').forEach(entry => {
+            if (entry.style.display !== 'none') {
+                resumeData.education.push({
+                    institution: entry.querySelector('[name="institution"]').value,
+                    degree: entry.querySelector('[name="degree"]').value,
+                    startYear: entry.querySelector('[name="startYear"]').value,
+                    endYear: entry.querySelector('[name="endYear"]').value
+                });
+            }
+        });
+        updatePreview();
+        alert('Education information saved!');
+    });
+
+    // Experience Form
+    document.getElementById('addExperience').addEventListener('click', function() {
+        const experienceEntry = document.querySelector('.experience-entry').cloneNode(true);
+        experienceEntry.querySelectorAll('input, textarea').forEach(input => input.value = '');
+        experienceEntry.style.display = 'block';
+        experienceEntry.querySelector('.remove-experience').addEventListener('click', function() {
+            experienceEntry.remove();
+        });
+        document.getElementById('experienceForm').insertBefore(experienceEntry, this);
+    });
+
+    document.getElementById('experienceForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        resumeData.experience = [];
+        document.querySelectorAll('.experience-entry').forEach(entry => {
+            if (entry.style.display !== 'none') {
+                resumeData.experience.push({
+                    company: entry.querySelector('[name="company"]').value,
+                    position: entry.querySelector('[name="position"]').value,
+                    startDate: entry.querySelector('[name="startDate"]').value,
+                    endDate: entry.querySelector('[name="endDate"]').value,
+                    description: entry.querySelector('[name="description"]').value
+                });
+            }
+        });
+        updatePreview();
+        alert('Experience information saved!');
+    });
+
+    // Skills Form
+    document.getElementById('skillsForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const skillsText = document.getElementById('skills').value;
+        resumeData.skills = skillsText.split(',').map(skill => skill.trim()).filter(skill => skill);
+        updatePreview();
+        alert('Skills saved!');
+    });
+
+    // Save Resume
+    document.getElementById('saveResumeBtn').addEventListener('click', function() {
+        localStorage.setItem('resumeData', JSON.stringify(resumeData));
+        alert('Resume saved successfully!');
+    });
+
+    // Populate forms with saved data
+    function populateForms() {
+        // Personal Info
+        if (resumeData.personalInfo) {
+            document.getElementById('fullName').value = resumeData.personalInfo.fullName || '';
+            document.getElementById('profession').value = resumeData.personalInfo.profession || '';
+            document.getElementById('email').value = resumeData.personalInfo.email || '';
+            document.getElementById('phone').value = resumeData.personalInfo.phone || '';
+            document.getElementById('address').value = resumeData.personalInfo.address || '';
+            document.getElementById('summary').value = resumeData.personalInfo.summary || '';
+        }
+
+        // Education
+        if (resumeData.education && resumeData.education.length > 0) {
+            // Clear existing entries except the first one
+            const educationContainer = document.getElementById('educationForm');
+            const firstEntry = document.querySelector('.education-entry');
+            firstEntry.style.display = 'none'; // Hide the first empty entry
+            
+            // Remove any additional entries
+            document.querySelectorAll('.education-entry').forEach((entry, index) => {
+                if (index > 0) entry.remove();
+            });
+            
+            // Add entries from saved data
+            resumeData.education.forEach((edu, index) => {
+                const newEntry = firstEntry.cloneNode(true);
+                newEntry.style.display = 'block';
+                newEntry.querySelector('[name="institution"]').value = edu.institution;
+                newEntry.querySelector('[name="degree"]').value = edu.degree;
+                newEntry.querySelector('[name="startYear"]').value = edu.startYear;
+                newEntry.querySelector('[name="endYear"]').value = edu.endYear;
+                
+                newEntry.querySelector('.remove-education').addEventListener('click', function() {
+                    newEntry.remove();
+                });
+                
+                if (index === 0) {
+                    firstEntry.replaceWith(newEntry);
+                } else {
+                    educationContainer.insertBefore(newEntry, document.getElementById('addEducation'));
+                }
+            });
+        }
+
+        // Experience
+        if (resumeData.experience && resumeData.experience.length > 0) {
+            // Similar to education
+            const experienceContainer = document.getElementById('experienceForm');
+            const firstEntry = document.querySelector('.experience-entry');
+            firstEntry.style.display = 'none';
+            
+            document.querySelectorAll('.experience-entry').forEach((entry, index) => {
+                if (index > 0) entry.remove();
+            });
+            
+            resumeData.experience.forEach((exp, index) => {
+                const newEntry = firstEntry.cloneNode(true);
+                newEntry.style.display = 'block';
+                newEntry.querySelector('[name="company"]').value = exp.company;
+                newEntry.querySelector('[name="position"]').value = exp.position;
+                newEntry.querySelector('[name="startDate"]').value = exp.startDate;
+                newEntry.querySelector('[name="endDate"]').value = exp.endDate;
+                newEntry.querySelector('[name="description"]').value = exp.description;
+                
+                newEntry.querySelector('.remove-experience').addEventListener('click', function() {
+                    newEntry.remove();
+                });
+                
+                if (index === 0) {
+                    firstEntry.replaceWith(newEntry);
+                } else {
+                    experienceContainer.insertBefore(newEntry, document.getElementById('addExperience'));
+                }
+            });
+        }
+
+        // Skills
+        if (resumeData.skills && resumeData.skills.length > 0) {
+            document.getElementById('skills').value = resumeData.skills.join(', ');
+        }
+
+        updatePreview();
+    }
+
+    // Template selection
+    document.querySelectorAll('.template-thumbnail').forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            document.querySelectorAll('.template-thumbnail').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            updatePreview();
+        });
+    });
+
+    // Update resume preview
+    function updatePreview() {
+        const selectedTemplate = document.querySelector('.template-thumbnail.active').dataset.template;
+        const preview = document.getElementById('resumePreview');
+        
+        // In a real app, you would have different template functions
+        preview.innerHTML = generateProfessionalTemplate();
+    }
+
+    // Template generators
+    function generateProfessionalTemplate() {
+        const { personalInfo, education, experience, skills } = resumeData;
+        
+        let html = `
+            <div class="resume-template">
+                <div class="resume-header">
+                    <h1 class="resume-name">${personalInfo.fullName || 'Your Name'}</h1>
+                    <h2 class="resume-profession">${personalInfo.profession || 'Your Profession'}</h2>
+                    <p>${personalInfo.email || ''} | ${personalInfo.phone || ''}</p>
+                    <p>${personalInfo.address || ''}</p>
+                </div>
+                
+                <div class="resume-section">
+                    <h3 class="section-title">PROFESSIONAL SUMMARY</h3>
+                    <p>${personalInfo.summary || 'Enter your professional summary here.'}</p>
+                </div>
+        `;
+        
+        if (education.length > 0) {
+            html += `
+                <div class="resume-section">
+                    <h3 class="section-title">EDUCATION</h3>
+                    ${education.map(edu => `
+                        <div class="education-item mb-3">
+                            <h4>${edu.institution}</h4>
+                            <p><strong>${edu.degree}</strong> | ${edu.startYear} - ${edu.endYear || 'Present'}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        if (experience.length > 0) {
+            html += `
+                <div class="resume-section">
+                    <h3 class="section-title">EXPERIENCE</h3>
+                    ${experience.map(exp => `
+                        <div class="experience-item mb-3">
+                            <h4>${exp.company}</h4>
+                            <p><strong>${exp.position}</strong> | ${exp.startDate} - ${exp.endDate || 'Present'}</p>
+                            <p>${exp.description || ''}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        if (skills.length > 0) {
+            html += `
+                <div class="resume-section">
+                    <h3 class="section-title">SKILLS</h3>
+                    <div class="skills-container">
+                        ${skills.map(skill => `
+                            <span class="skill-item">${skill}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += `</div>`;
+        return html;
+    }
+
+    // Initialize
+    populateForms();
+});

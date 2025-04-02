@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Resume Builder</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/themes.css">
+</head>
+<body class="indigo-theme">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">ResumeBuilder</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="themeToggle">Vibrant Theme</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="bi bi-person-fill"></i> Personal Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="personalInfoForm">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="profession" class="form-label">Profession</label>
+                                <input type="text" class="form-control" id="profession" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea class="form-control" id="address" rows="2"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="summary" class="form-label">Professional Summary</label>
+                                <textarea class="form-control" id="summary" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="bi bi-book-fill"></i> Education</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="educationForm">
+                            <div class="education-entry mb-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Institution</label>
+                                    <input type="text" class="form-control" name="institution" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Degree</label>
+                                    <input type="text" class="form-control" name="degree" required>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Start Year</label>
+                                        <input type="number" class="form-control" name="startYear" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">End Year</label>
+                                        <input type="number" class="form-control" name="endYear">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-danger btn-sm remove-education">Remove</button>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm" id="addEducation">Add Education</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="bi bi-briefcase-fill"></i> Experience</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="experienceForm">
+                            <div class="experience-entry mb-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-control" name="company" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Position</label>
+                                    <input type="text" class="form-control" name="position" required>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Start Date</label>
+                                        <input type="text" class="form-control" name="startDate" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">End Date</label>
+                                        <input type="text" class="form-control" name="endDate">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" name="description" rows="2"></textarea>
+                                </div>
+                                <button type="button" class="btn btn-danger btn-sm remove-experience">Remove</button>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm" id="addExperience">Add Experience</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="bi bi-tools"></i> Skills</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="skillsForm">
+                            <div class="mb-3">
+                                <label class="form-label">Skills (comma separated)</label>
+                                <textarea class="form-control" id="skills" rows="3" placeholder="e.g., JavaScript, Python, Project Management"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>Resume Preview</h4>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" id="saveResumeBtn">
+                                <i class="bi bi-save"></i> Save
+                            </button>
+                            <button class="btn btn-sm btn-primary" id="downloadBtn">
+                                <i class="bi bi-download"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="template-selector mb-4">
+                            <h5>Select Template:</h5>
+                            <div class="d-flex flex-wrap template-thumbnails">
+                                <div class="template-thumbnail active" data-template="professional">
+                                    <img src="assets/images/template1-preview.jpg" alt="Professional Template">
+                                    <span>Professional</span>
+                                </div>
+                                <div class="template-thumbnail" data-template="modern">
+                                    <img src="assets/images/template2-preview.jpg" alt="Modern Template">
+                                    <span>Modern</span>
+                                </div>
+                                <div class="template-thumbnail" data-template="creative">
+                                    <img src="assets/images/template3-preview.jpg" alt="Creative Template">
+                                    <span>Creative</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="resumePreview" class="resume-preview">
+                            <!-- Resume preview will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="scripts/templates.js"></script>
+    <script src="scripts/builder.js"></script>
+    <script src="scripts/pdfGenerator.js"></script>
+</body>
+</html>

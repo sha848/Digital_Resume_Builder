@@ -1,0 +1,33 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.auth-card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.captcha-code {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    padding: 5px 10px;
+    background-color: var(--light-bg);
+    border-radius: 4px;
+    user-select: none;
+}
+
+.captcha-container {
+    background-color: var(--light-bg);
+    padding: 15px;
+    border-radius: 5px;
+}
